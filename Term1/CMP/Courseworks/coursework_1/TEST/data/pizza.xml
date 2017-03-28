@@ -1,0 +1,16 @@
+<pizza>
+	<shopname>Chipp's Pizza Shop</shopname>
+	<sizes>
+		<size code="L">Large</size>
+		<size code="XL">Extra Large</size>
+	</sizes>
+	<toppings>
+		<topping code="x">Extra Cheese</topping>
+		<topping code="m">Mushrooms</topping>
+		<topping code="s">Special Sauce</topping>
+	</toppings>
+	<crusts>
+		<crust code="thick">Thick Crust</crust>
+		<crust code="thin">Thin Crust</crust>
+	</crusts>
+</pizza>

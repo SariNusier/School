@@ -1,0 +1,12 @@
+# Chipp's Pizza Shop
+
+## Sizes
+- Large
+- Extra Large
+
+## Toppings
+- Extra Cheese
+- Mushrooms
+
+## Crusts
+- Thick Crust
