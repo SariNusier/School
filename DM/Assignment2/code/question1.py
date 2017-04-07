@@ -1,23 +1,38 @@
 import numpy as np
-import csv
 import pandas as pd
+
+DEFAULT_PATH_NAME = '../data/lastfm.csv'
+
 
 def read_file(pathname):
     try:
-        with open(pathname, "r") as fd:
-            data = csv.DictReader(fd)
-            dict_data = list(data)
-            return dict_data
+        return pd.read_csv(pathname)
     except IOError as ioe:
-        print("IOError: " + str(ioe))
+        """
+        Exit program? Read execption handling for this case.
+        """
+        print ioe
+
+
+def find_rule_in_df(data_frame, l, r):
+    # instances_with_l = data_frame.any('artist' == l)
+    users_with_rule = []
+    grouped_by_user = data_frame.groupby('user')['artist'].apply(list)
+    for u in grouped_by_user.index.values:
+        if {l, r}.issubset(grouped_by_user[u]):
+            users_with_rule.append(u)
+    return users_with_rule
+    # containing_L_R = grouped_by_user[(grouped_by_user['artist'].any(l)) & (grouped_by_user['artist'].any(r))]
+    # print grouped_by_user
 
 
 def main():
-    # data = np.array(read_file("../data/lastfm.csv"))
-    data_frame = pd.read_csv("../data/lastfm.csv")
-    print data_frame
+    data_frame = read_file(DEFAULT_PATH_NAME)
     top_three_freq = data_frame["artist"].value_counts()[:3]
-    a = data_frame.groupby(['user','artist'])['artist'].count()
-    print a
+    a = data_frame.groupby(['user', 'artist'])['artist'].count()
+    rules = find_rule_in_df(data_frame, 'red hot chili peppers', 'goldfrapp')
+    print rules
+
+
 if __name__ == "__main__":
     main()
