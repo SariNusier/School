@@ -4,3 +4,5 @@
 *.log
 *.gz
 *.zip
+*.pyc
+*/.idea/
