@@ -35,6 +35,8 @@ class StateAsKey:
     """ 
     Helper class. Used as a key in a dictionary.
     The hashing and comparison functions are overriden in order to use the objects as keys in a dict.
+    Help from:
+    https://stackoverflow.com/questions/4901815/object-of-custom-type-as-dictionary-key
     """
 
     def __init__(self, state, action):
