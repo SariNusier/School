@@ -1,0 +1,68 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	\title{Machine Learning -- Coursework 2}
+	\author{Sari Nusier}
+	\date{\today}
+	\maketitle
+\end{titlepage}
+
+
+\section{Evolutionary Algorithms}
+	\begin{enumerate}[label=(\alph*)]
+		\item Five basic steps of an evolutionary algorithm:
+			\begin{enumerate}[label=\roman*.]
+				\item the first one
+				\item the second one
+			\end{enumerate}
+		\item Mutation rate of 20\%
+		
+		\item Crossover exercise:
+		
+		\item Mediocre stable state
+	\end{enumerate}
+
+\section{Analytical Learning}
+	\begin{enumerate}[label=(\alph*)]
+		\item Inductive and Deductive Learning:
+			\begin{enumerate}[label=\roman*.]
+				\item Inductive Learning
+				\item Deductive Learning
+			\end{enumerate}
+		\item Difference between them
+		\item Examples
+		\item How to play Tron
+	\end{enumerate}
+
+\section{Reinforcement Learning}
+	\subsection{Algorithm}
+The algorithm implemented is based on the Q-Learning algorithm found in the lecture notes. Implementation details can be found in 3.2.
+
+When the game starts, the getAction() method is called with a specific state $s$. We take the state and make a decision on what action should be taken. The action is chosen using the $\epsilon$-greedy method.  If the pseudorandom number generated is less than $\epsilon$, we make a random decision, otherwise we choose the action $a$ to maximise $Q(s,a)$. If the state $s$ has not been encountered before, we initialise all $\langle s, a_i\rangle$ pairs for all valid actions $a_i$ with $0$. Therefore, the first choice for a state that has not been encountered before will be the first action found in the list of legal actions (unless the pseudorandom number gives us a random choice). We return the chosen action $a$ and we mark that $Q(s,a)$ has to be updated. The algorithm moves from $s$ to $s'$ and calls for another decision to be made. At this point we first need to update the $Q$ value that we have previously marked. We update based on the following formula:
+\[Q(s, a) \leftarrow Q(s,a) + \alpha (R(s) + \gamma  \max_{a'} Q(s', a') - Q(s, a))\]
+where $a'$ are all the legal actions that can be taken in $s'$ (as seen in the lecture).
+As we previously saw, if $s'$ has not been encountered before, we initialise $Q(s', a')$ to 0 for all $a'$ valid actions in $s'$. Therefore the maximum of $Q(s', a')$ for all $a'$ in legal actions will be the first in the list (as they are all 0). When the $Q$ values have changed and are no longer 0, the maximum will be chosen when get\_max\_Q is called(please note that the method get\_max\_Q returns both the maxima and the argument of the maxima).
+
+When a terminal state is detected (is\_final flag is set to True) the $Q$ value for the previous $\langle s, a\rangle$ pair is calculated as normal and the $Q$ value for the current state and action = None is set to the current score (of the terminal state): $Q(s, None) \leftarrow R(s)$ where $s$ is terminal.
+
+\subsection{Implementation}
+The $Q$ values are stored in a python dictionary. A custom class (StateAsKey) has been created to be used as key in the dictionary (please see \sloppy \url{https://stackoverflow.com/questions/4901815/object-of-custom-type-as-dictionary-key}) The hashing and comparison functions are overriden to allow for the instances of this class to be used as key (it is important that different instances of the class with the same attribute values would map to the same values in the dictionary). 
+The ghost positions list and the array of food locations were made immutable to allow for hashing (cast to frozenset and str).
+StateAsKey uses the three attributes that define the state (PacmanPosition, GhostPositions and Food) to which it adds an Action. This forms the key to be used to store the $Q$ value.
+We can simply call q\_values[StateAsKey(state, action)] to set or retrieve a $Q$ value.
+
+Another class has been used (QLearner) to have a better separation of the code (mostly to make it clearer for myself). Please note that a copy of alpha, epsilon and gamma is made in the instance of q\_learner. You will see that at the end of the code, when training is done, the $\alpha$ and $\epsilon$ values must be set to $0$ in the QLearner instance as well. 
+A short description for each method can be found in the code.
+
+When working on the code, I have tried to change the learning rate over time ($1/n$) but I had better results from keeping it set to 0.3 throughout. The $\epsilon$ used is 0.2.
+
+
+	
+	
+
+\end{document}
