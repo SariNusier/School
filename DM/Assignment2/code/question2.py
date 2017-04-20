@@ -2,6 +2,15 @@
 # 7ccsmdm1 - lab9 solution
 # sklar/19-mar-2017
 # --
+# THIS CODE IS AN ENTIRE COPY OF THE SOLUTION FOR LAB 9 MADE BY ELIZABETH SKLAR.
+# I HAVE ADDED MY CODE TO INCLUDE THE CLASSIFICATION USING A TERM-DOCUMENT MATRIX.
+# TO MAKE IT CLEAR, I HAVE WRITTEN A LIST OF THE LINES OF CODE WRITTEN BY ME BELOW.
+# THE CODE FOR CREATING AND USING THE TERM-DOCUMENT MATRIX FOR CLASSIFICATION HAS BEEN INSPIRED FROM
+# td-demo.py CODE INCLUDED WITH THIS COURSEWORK.
+
+# LINES WRITTEN FOR DATA MINING - ASSIGNMENT 2:
+# 23, 24: included other libraries
+#
 
 import sys
 import nltk
@@ -11,7 +20,10 @@ import sklearn.model_selection as modsel
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
+from sklearn.feature_extraction import text
+from sklearn import metrics
 
 datafile = '../data/SMSSpamCollection.txt'
 
@@ -125,6 +137,12 @@ for j in range(len(X_bal_train)):
     X[j][3] = num_punct
     X[j][4] = num_words
 
+# -Initialise TfidfVectorizer() object
+vectorizer = text.TfidfVectorizer()
+# -Compute term-document matrix
+td_train = vectorizer.fit_transform(X_train)
+td_test = vectorizer.transform(X_test)
+
 # --PART 4: TRAIN CLASSIFIER
 # compare three classifiers:
 # 1 = multinomial naive bayes
@@ -136,6 +154,29 @@ clf = [MultinomialNB(), BaggingClassifier(), AdaBoostClassifier()]
 clf_labels = ['Multinomial Bayes', 'Bagging', 'AdaBoost']
 num_clf = len(clf)
 
+clf_td = [MultinomialNB(), BaggingClassifier(), AdaBoostClassifier(), RandomForestClassifier()]
+clf_labels_td = ['Multinomial Bayes', 'Bagging', 'AdaBoost', 'RandomForest']
+num_clf_td = len(clf_td)
+
+for c in range(num_clf_td):
+    clf_td[c].fit(td_train, y_train)
+
+
+for c in range(num_clf_td):
+    pred = clf_td[c].predict(td_test)
+    print clf_labels_td[c]
+    confusion_matrix = metrics.confusion_matrix(y_test, pred, labels=['ham', 'spam'])
+    TN = confusion_matrix[0][0]
+    FP = confusion_matrix[0][1]
+    FN = confusion_matrix[1][0]
+    TP = confusion_matrix[1][1]
+    print 'TP=%d FP=%d TN=%d FN=%d' % (TP, FP, TN, FN)
+    precision = TP / float(TP + FP)
+    recall = TP / float(TP + FN)
+    f1 = (2 * precision * recall) / (precision + recall)
+    print 'precision=%f recall=%f f1=%f' % (precision, recall, f1)
+
+"""
 # -then fit a model for each classifier
 for c in range(num_clf):
     clf[c].fit(X, y)
@@ -213,3 +254,4 @@ for c in range(num_clf):
     recall = num_TP[c] / float(num_TP[c] + num_FN[c])
     f1 = (2 * precision * recall) / (precision + recall)
     print 'precision=%f recall=%f f1=%f' % (precision, recall, f1)
+"""
