@@ -1,0 +1,177 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	\title{Data Mining -- Assignment 2}
+	\author{Sari Nusier - 1317015}
+	\date{\today}
+	\maketitle
+\end{titlepage}
+
+
+\section{Association Rules}
+	\begin{enumerate}[label=(\alph*)]
+		\item The three most frequent artists:
+		
+		$A = $ radiohead
+		
+		$B = $ the beatles
+		
+		$C = $ coldplay
+		
+		$fr(A) = 2704$
+		
+		$fr(B) = 2668$
+		
+		$fr(C) = 2378$
+		
+		In order to get the frequencies, we read the csv file in a pandas dataframe. We can get the frequency of all artists by calling: 
+		
+		one\_item\_sets\_coverage = data\_frame["artist"].value\_counts(). 
+		
+		To get top three we just call: one\_item\_sets\_coverage[:3]
+		
+		\item Compute support for each of the rules:
+		
+			We compute the support of a rule by dividing the support count (number of transactions where both items occur) by the number of transactions.
+			$support(A \Rightarrow B) = \frac{873}{15000}$
+			
+			$support(A \Rightarrow C) = \frac{819}{15000}$
+			
+			$support(B \Rightarrow A) = \frac{873}{15000}$
+			
+			$support(B \Rightarrow C) = \frac{665}{15000}$
+			
+			$support(C \Rightarrow A) = \frac{819}{15000}$
+			
+			$support(C \Rightarrow B) = \frac{665}{15000}$
+		\item Compute confidence for each of the rules:
+					
+			We compute the confidence of the rule by dividing the support count of the rule by the support count of the antecedent (LHS) only (which can be taken from the frequencies we found in a).		
+			
+			$confidence(A \Rightarrow B) =  \frac{873}{2704}$
+			
+			$confidence(A \Rightarrow C) = \frac{819}{2704}$
+			
+			$confidence(B \Rightarrow A) = \frac{873}{2668}$
+			
+			$confidence(B \Rightarrow C) = \frac{665}{2668}$
+			
+			$confidence(C \Rightarrow A) = \frac{819}{2378}$
+			
+			$confidence(C \Rightarrow B) = \frac{665}{2378}$
+		
+	\end{enumerate}
+
+\section{Natural Language Processing (NLP)}
+	\begin{enumerate}[label=(\alph*)]
+		\item Precision
+			\begin{enumerate}[label=\roman*.]
+				\item MultiNomial Bayes: 1.000000
+				
+				\item Bagging: 0.946237
+				
+				\item AdaBoost: 0.929825
+				
+				\item Random Forest: 0.992218
+				
+			\end{enumerate}
+		\item Recall
+		\begin{enumerate}[label=\roman*.]
+				\item MultiNomial Bayes: 0.598854
+				
+				\item Bagging: 0.756447
+				
+				\item AdaBoost: 0.759312
+				
+				\item Random Forest: 0.730659
+				
+			\end{enumerate}
+		\item F1
+			\begin{enumerate}[label=\roman*.]
+				\item MultiNomial Bayes: 0.749104
+				
+				\item Bagging: 0.840764
+				
+				\item AdaBoost: 0.835962
+				
+				\item Random Forest: 0.841584
+				
+			\end{enumerate}
+	\end{enumerate}
+
+\section{Survival and Time Series Mining}
+	\begin{enumerate}[label=(\alph*)]
+		\item 
+		The code can be found in question3.py		
+		
+		Sample output:
+		
+		   EmployeeID  tenure
+		   
+0        1318      26
+
+1        1319      26
+
+2        1320      26
+
+3        1321      26
+
+4        1322      26
+
+5        1323      26
+
+6        1325      26
+
+7        1328      26
+
+8        1329      26
+
+9        1330      26
+
+   EmployeeID Censored
+
+0        1318     True
+
+1        1319     True
+
+2        1320     True
+
+3        1321     True
+
+4        1322     True
+
+5        1323     True
+
+6        1325     True
+
+7        1328     True
+
+8        1329     True
+
+9        1330     True
+
+		\item 
+			\begin{enumerate}[label=\roman*.]
+				\item 	
+			\end{enumerate}
+		\item 
+			\begin{enumerate}[label=\roman*.]
+				\item 		
+			\end{enumerate}
+		\item 
+			\begin{enumerate}[label=\roman*.]
+				\item 		
+			\end{enumerate}
+	\end{enumerate}
+
+
+\begin{thebibliography}{9}
+\bibitem{coevolution}
+Pollack, J. B.; Blair, A.; and Land, M. 1997. Coevolution of a backgammon player. In Langton and Shimohara (1997).
+\end{thebibliography}
+\end{document}
