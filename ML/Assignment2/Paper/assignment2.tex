@@ -7,7 +7,7 @@
 \begin{titlepage}
 	\centering
 	\title{Machine Learning -- Coursework 2}
-	\author{Sari Nusier}
+	\author{Sari Nusier - 1317015}
 	\date{\today}
 	\maketitle
 \end{titlepage}
@@ -15,28 +15,96 @@
 
 \section{Evolutionary Algorithms}
 	\begin{enumerate}[label=(\alph*)]
-		\item Five basic steps of an evolutionary algorithm:
+		\item The five basic steps of an evolutionary algorithm can be defined as:
 			\begin{enumerate}[label=\roman*.]
-				\item the first one
-				\item the second one
+				\item Initialisation
+				
+				In this step we initialise a population $P$ with hypothesis $h_i$ (each $h_i$ can be seen as a possible solution to a given problem).
+				\item Evaluation
+				
+				We calculate $Fitness(h_i)$ for each $h_i$ in $P$. In other words, we evaluate how well each hypothesis solves the problem.
+				\item Selection
+				
+				We probabilistically select a  proportion of the population to carry on to the next generation. One way to ensure that Fitness is taken into account when choosing the hypothesis to carry over is by using the following probability (fitness proportionate selection): \[Pr(h_i) = \frac{Fitness(h_i)}{\sum_{j=1}^{N} Fitness(h_j)}\]
+				\item Reproduction
+				
+				This is the second step of creating the next generation. Reproduction can be down in two ways: Mutation (asexual reproduction) and Crossover (sexual reproduction).
+				In Mutation, we choose bits in a hypothesis to "flip" (bitwise not for random bits in the hypothesis).
+				In the case of Crossover, two hypothesis are used to create a new one, based on a crossover mask. The crossover mask determines which bits are kept from which parent. The mask can be generated in different ways: Single-point crossover, Two-point crossover and Uniform crossover(random).
+				\item Repeat from (ii)
+				
+				The new population goes through the same process again (evaluated, selected, reproduced). The process can stop when we find a hypothesis that satisfies our fitness need. \[\exists h_i \in P:Fitness(h_i) > fitness\_threshold\]
 			\end{enumerate}
-		\item Mutation rate of 20\%
+		\item Explain mutation rate of 20\%.
 		
+		Given a population with $N$ hypothesis, the mutation rate $m$ defines the proportion of the population to be mutated and the proportion to be kept as is.
+		
+		We have seen in the previous question that one way to perform reproduction is through mutation. A hypothesis is represented as a bit-string. For example: \fbox{0}\fbox{0}\fbox{0}\fbox{1}\fbox{0}. We either do a 1-point mutation, where we randomly select 1 bit and flip it (do a bitwise not) or n-point mutation, where we randomly select n points to flip. If we select to mutate the third and fourth bit in our example, the resulting offspring will look like:  \fbox{0}\fbox{0}\fbox{1}\fbox{0}\fbox{0}.
+		
+		The mutation rate $m$ where $0\leq m\leq 1$, tells us that ($m*N$) hypothesis from $P$ must be mutated, while $((1-m)*N)$ must be kept as is. For a population with $N = 100$ hypothesis and mutation rate $m = 0.2$ we would choose to mutate 20 hypothesis, while the rest of 80 will be selected as is.
 		\item Crossover exercise:
+\[ p1 = \fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\]
+\[ p2 = \fbox{1}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{0}\fbox{0}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{1}\]
+\[ mask = \fbox{0}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{1}\fbox{1}\]
+
+		We first highlight the bits that must be changed for each parent based on the mask:
+		\[p1 = 011\underline{100}1110\underline{01110}\]
+		\[p2 = \underline{111}100\underline{0010}01111\]
+		Then we generate the two offsprings:
+\[o1 = \fbox{1}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{0}\fbox{0}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\]
+\[o2 = \fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{0}\fbox{0}\fbox{1}\fbox{1}\fbox{1}\fbox{1}\]
 		
 		\item Mediocre stable state
+		
+		Pollack, Blair and Land (1997)\cite{coevolution} define the mediocre stable state to be a form of collusion between two agents engaged in a co-evolution learning process. This means that the model converges to a suboptimal state even though the state appears to be the local optimum. For example, when playing a game, an agent might just converge towards a strategy that appears to be optimal, without knowing that there are better strategies. If the second agent that it plays against decides that the strategy is optimal as well, and does not force for a better strategy to be found, the two can be said to have colluded and have stopped evolving.
+		
+		As an example of such collusion we can take two agents learning to play chess. One suboptimal strategy they might reach is sacrificing each other's pieces and aim for a stalemate. If we ensure that stalemates are not allowed and force the agents to avoid them, the agents can again sacrifice all the pieces and run from each other indefinitely. Thus, neither one of them will ever win.
 	\end{enumerate}
 
 \section{Analytical Learning}
 	\begin{enumerate}[label=(\alph*)]
-		\item Inductive and Deductive Learning:
+		\item Inductive and Deductive Learning.
 			\begin{enumerate}[label=\roman*.]
 				\item Inductive Learning
+				
+				Inductive learning is the process of creating a \emph{general} model that explains a process from particular examples/instances. That is, generalising a concept from particular cases.
 				\item Deductive Learning
+				
+				In deductive learning, rules are given in addition to data that shows how the rules are being applied. Learn from a general concept and examples and apply it to particular cases.
 			\end{enumerate}
-		\item Difference between them
-		\item Examples
-		\item How to play Tron
+		\item Difference between the two
+		
+		Inductive learning requires the amount of data provided to the learner to be sufficient to create an accurate model. Lack of data will cause the model to be unreliable. The learner has no understanding of the "concept" behind what it's trying to learn. In deductive learning we provide a model of the concept (\emph{domain theory}) that must be derived from the data. This way, we guide the learner towards better solutions, increasing the accuracy of the model and the optimality of the decisions made.
+		\item Examples.
+			\begin{enumerate}[label=\roman*.]
+				\item Inductive learning:
+				
+				Decision Tree Learning. In this methodology we create a decision tree that maximises its accuracy on the data provided.
+				\item Deductive learning:
+				
+				Learning from demonstration. Examples (state-action pairs) are used to derive a policy.
+				
+				
+			\end{enumerate}
+		\item Playing Tron with each method.
+			\begin{enumerate}[label=\roman*.]
+				\item Inductive using Evolutionary Algorithm (co-evolution):
+					
+					Hypothesis(agents) are represented as GAs.
+					
+					We initialise to populations $P_1$ and $P_2$
+					
+					We calculate fitness of agent $a_i$ by playing all agents $a_j$ from the opposing population and summing the scores. Score could be 0 for a loss, 0.5 for draw and 1 for win.
+					
+					We then reproduce(mutation and crossover) and repeat until convergence(making sure to avoid collusion).
+					
+					\item Deductive using Explanation-based learning:
+					
+					We first build a training set from multiple games being played by humans. We encode each instance as a state-action pair and an aggregate of the scores of the games the pair was found in (similar to Q-learning).
+					
+					We build a set of Horn-clauses defining obvious moves to avoid (such as turning to hit the enemy's trail, or avoiding getting stuck in enemy's loop). We can also define more complex rules that might be identified from a more thorough analysis of the game (such as making sure to identify and leverage a winning situation). 
+				
+			\end{enumerate}
 	\end{enumerate}
 
 \section{Reinforcement Learning}
@@ -61,8 +129,8 @@ A short description for each method can be found in the code.
 
 When working on the code, I have tried to change the learning rate over time ($1/n$) but I had better results from keeping it set to 0.3 throughout. The $\epsilon$ used is 0.2.
 
-
-	
-	
-
+\begin{thebibliography}{9}
+\bibitem{coevolution}
+Pollack, J. B.; Blair, A.; and Land, M. 1997. Coevolution of a backgammon player. In Langton and Shimohara (1997).
+\end{thebibliography}
 \end{document}
