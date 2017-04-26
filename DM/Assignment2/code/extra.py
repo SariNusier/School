@@ -86,27 +86,39 @@ n_clusters = [2, 3, 4, 5, 10, 20, 30, 40, 50, 100]
 normalized = preprocessing.normalize(X)
 clst = [cluster.KMeans(n_clusters=c_no).fit(normalized) for c_no in n_clusters]
 
-# pcas = [decomposition.PCA(n_components=n_comp) for n_comp in range(2,10)]
+pcas = [decomposition.PCA(n_components=n_comp) for n_comp in range(2,10)]
 
 for c in clst:
     unique_labels = np.unique(c.labels_)
     cluster_match_score = []
+    cluster_match_no = []
     for label in unique_labels:
         number_of_yes = np.sum(y[c.labels_ == label] == '1')
+        number_of_no = np.sum(y[c.labels_ == label] == '0')
         cluster_size = len(y[c.labels_ == label])
         cluster_match_score.append(float(number_of_yes)/cluster_size)
+        cluster_match_no.append(float(number_of_no)/cluster_size)
+    print cluster_match_score
+    print cluster_match_no
     print sum(cluster_match_score)/len(cluster_match_score)
     print np.mean(cluster_match_score)
 
     # print c.inertia_
     # print metrics.silhouette_score(normalized, c.labels_)
     # print metrics.calinski_harabaz_score(normalized, c.labels_)
-"""
+
 for p in pcas:
-    data = p.fit_transform(normalized)
-    p_clst = [cluster.KMeans(n_clusters=c_no).fit(data) for c_no in n_clusters]
-    for c in p_clst:
-        print c.inertia_
-        counter = counter + 1
-    print
-"""
+    for c in clst:
+        unique_labels = np.unique(c.labels_)
+        cluster_match_score = []
+        cluster_match_no = []
+        for label in unique_labels:
+            number_of_yes = np.sum(y[c.labels_ == label] == '1')
+            cluster_size = len(y[c.labels_ == label])
+            cluster_match_score.append(float(number_of_yes)/cluster_size)
+
+        print cluster_match_score
+        print sum(cluster_match_score)/len(cluster_match_score)
+        print np.mean(cluster_match_score)
+
+

@@ -87,15 +87,69 @@ normalized = preprocessing.normalize(X)
 clst = [cluster.KMeans(n_clusters=c_no).fit(normalized) for c_no in n_clusters]
 
 pcas = [decomposition.PCA(n_components=n_comp) for n_comp in range(2,10)]
+# (a)
+inertias = []
+sils = []
+cals = []
 
-# for c in clst:
-    # print c.inertia_
-    # print metrics.silhouette_score(normalized, c.labels_)
-    # print metrics.calinski_harabaz_score(normalized, c.labels_)
+for i, c in enumerate(clst):
+    inertias.append(c.inertia_)
+    sils.append(metrics.silhouette_score(normalized, c.labels_))
+    cals.append(metrics.calinski_harabaz_score(normalized, c.labels_))
+"""
+plt.plot(n_clusters, inertias)
+plt.title("Inertias")
+plt.xlabel('Number of clusters')
+plt.ylabel('Inertia')
+plt.savefig('a/intertias.png')
+plt.close()
 
-for p in pcas:
+plt.plot(n_clusters, sils)
+plt.xlabel('Number of clusters')
+plt.title("Sihouette scores")
+plt.ylabel('Silhouette score')
+plt.savefig('a/sils.png')
+plt.close()
+
+plt.plot(n_clusters, cals)
+plt.xlabel('Number of clusters')
+plt.title("Calinski-Harabaz scores")
+plt.ylabel('Calinski-Harabaz Score')
+plt.savefig('a/cals.png')
+plt.close()
+"""
+
+# (b)
+
+for i, p in enumerate(pcas):
     data = p.fit_transform(normalized)
     p_clst = [cluster.KMeans(n_clusters=c_no).fit(data) for c_no in n_clusters]
+    inertias = []
+    sils = []
+    cals = []
     for c in p_clst:
-        print c.inertia_
-    print
+        inertias.append(c.inertia_)
+        sils.append(metrics.silhouette_score(data, c.labels_))
+        cals.append(metrics.calinski_harabaz_score(data, c.labels_))
+"""
+    plt.plot(n_clusters, inertias)
+    plt.title("Inertias")
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Inertia')
+    plt.savefig('b/intertias-%d.png' % i)
+    plt.close()
+
+    plt.plot(n_clusters, sils)
+    plt.xlabel('Number of clusters')
+    plt.title("Sihouette scores")
+    plt.ylabel('Silhouette score')
+    plt.savefig('b/sils-%d.png' % i)
+    plt.close()
+
+    plt.plot(n_clusters, cals)
+    plt.xlabel('Number of clusters')
+    plt.title("Calinski-Harabaz scores")
+    plt.ylabel('Calinski-Harabaz Score')
+    plt.savefig('b/cals-%d.png' % i)
+    plt.close()
+"""

@@ -7,9 +7,6 @@ def read_file(pathname):
     try:
         return pd.read_csv(pathname)
     except IOError as ioe:
-        """
-        Exit program? Read exception handling for this case.
-        """
         print(ioe)
 
 
