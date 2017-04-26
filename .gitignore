@@ -1,4 +1,8 @@
 *.aux
+*.out
+.idea/
+env/
+.DS_STORE
 *.csv
 *.txt
 *.log
@@ -6,3 +10,6 @@
 *.zip
 *.pyc
 */.idea/
+
+# Large files
+*.png
